@@ -1,4 +1,5 @@
 build: off
 
 test_script:
+- ps: .\test-python.ps1
 - ps: .\test-miniconda.ps1
