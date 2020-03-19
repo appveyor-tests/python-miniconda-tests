@@ -11,7 +11,7 @@ function CheckPython($path) {
     
     if (Test-Path "$path\Scripts\pip.exe") {
         (cmd /c "$path\Scripts\pip.exe" --version 2>&1)
-    } else if ($path.contains('26')) {
+    } elseif ($path.contains('26')) {
         Write-Host "pip.exe is missing in $path" -ForegroundColor Red
     } else {
         throw "pip.exe is missing in $path"
