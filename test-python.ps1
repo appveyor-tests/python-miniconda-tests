@@ -1,14 +1,25 @@
 function CheckPython($path) {
-    if (-not (Test-Path "$path\python.exe")) { throw "python.exe is missing in $path"; }
-    elseif (-not (Test-Path "$path\Scripts\pip.exe")) { throw "pip.exe is missing in $path"; }
-    else { Write-Host "$path is OK" -ForegroundColor Green; }
-    $r = (cmd /c "$path\python.exe" --version 2>&1)
-    $r.Exception
-    if (-not $r.Exception) {
-        cmd /c "$path\python.exe" --version
+    if (Test-Path "$path\python.exe") {
+        $r = (cmd /c "$path\python.exe" --version 2>&1)
+        $r.Exception
+        if (-not $r.Exception) {
+            cmd /c "$path\python.exe" --version
+        }
+    } else {
+        throw "python.exe is missing in $path";
     }
-    (cmd /c "$path\Scripts\pip.exe" --version 2>&1)
-    (cmd /c "$path\Scripts\virtualenv.exe" --version 2>&1)
+    
+    if (Test-Path "$path\Scripts\pip.exe") {
+        (cmd /c "$path\Scripts\pip.exe" --version 2>&1)
+    } else {
+        Write-Host "pip.exe is missing in $path" -ForegroundColor Red
+    }
+
+    if (Test-Path "$path\Scripts\virtualenv.exe") {
+        (cmd /c "$path\Scripts\virtualenv.exe" --version 2>&1)
+    } else {
+        Write-Host "virtualenv.exe is missing in $path" -ForegroundColor Red
+    }
 }
 
 CheckPython 'C:\Python26'
@@ -25,3 +36,5 @@ CheckPython 'C:\Python36'
 CheckPython 'C:\Python36-x64'
 CheckPython 'C:\Python37'
 CheckPython 'C:\Python37-x64'
+CheckPython 'C:\Python38'
+CheckPython 'C:\Python38-x64'
